@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: cineverse
+
+  datasource:
+    url: jdbc:postgresql://localhost:${DB_PORT:5432}/${DB_LOCAL:cineverse_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true

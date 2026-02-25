@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  db-postgres:
+    image: postgres:16.0-alpine3.18
+    container_name: cineverse-db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_LOCAL}
+    ports:
+      - "${DB_PORT}:5432"
