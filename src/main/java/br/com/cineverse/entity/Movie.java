@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Movie {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    private double rating;
+    private BigDecimal rating;
 
     @CreationTimestamp
     @Column(name = "created_at")
