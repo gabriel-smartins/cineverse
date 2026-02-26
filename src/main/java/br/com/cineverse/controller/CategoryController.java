@@ -20,7 +20,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponseDTO>> getAllCategories() {
+    public ResponseEntity<List<CategoryResponseDTO>> getAll() {
         List<Category> categories = categoryService.findAll();
 
         return ResponseEntity.ok((categories.stream()
@@ -29,22 +29,22 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public CategoryResponseDTO getCategoryById(@PathVariable("id") Long categoryId) {
+    public ResponseEntity<CategoryResponseDTO> getById(@PathVariable("id") Long categoryId) {
         return categoryService.findById(categoryId)
                 .map(category -> ResponseEntity.ok(CategoryMapper.toCategoryResponseDTO(category)))
-                .orElse(ResponseEntity.notFound().build()).getBody();
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> saveCategory(@RequestBody CategoryRequestDTO request) {
+    public ResponseEntity<CategoryResponseDTO> save(@RequestBody CategoryRequestDTO request) {
         var category = CategoryMapper.toCategory(request);
-        var savedCategory = categoryService.saveCategory(category);
+        var savedCategory = categoryService.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(CategoryMapper.toCategoryResponseDTO(savedCategory));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategoryById(@PathVariable("id") Long categoryId) {
-        categoryService.deleteCategory(categoryId);
+    public ResponseEntity<Void> delete(@PathVariable("id") Long categoryId) {
+        categoryService.delete(categoryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
