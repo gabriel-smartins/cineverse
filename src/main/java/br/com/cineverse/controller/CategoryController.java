@@ -6,6 +6,8 @@ import br.com.cineverse.entity.Category;
 import br.com.cineverse.mapper.CategoryMapper;
 import br.com.cineverse.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,33 +20,31 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryResponseDTO> getAllCategories() {
+    public ResponseEntity<List<CategoryResponseDTO>> getAllCategories() {
         List<Category> categories = categoryService.findAll();
 
-        return categories.stream()
+        return ResponseEntity.ok((categories.stream()
                 .map(CategoryMapper::toCategoryResponseDTO)
-                .toList();
+                .toList()));
     }
 
     @GetMapping("/{id}")
     public CategoryResponseDTO getCategoryById(@PathVariable("id") Long categoryId) {
-        var category = categoryService.findById(categoryId);
-
-        if (category.isPresent()) {
-            return CategoryMapper.toCategoryResponseDTO(category.get());
-        }
-        return null;
+        return categoryService.findById(categoryId)
+                .map(category -> ResponseEntity.ok(CategoryMapper.toCategoryResponseDTO(category)))
+                .orElse(ResponseEntity.notFound().build()).getBody();
     }
 
     @PostMapping
-    public CategoryResponseDTO saveCategory(@RequestBody CategoryRequestDTO request) {
+    public ResponseEntity<CategoryResponseDTO> saveCategory(@RequestBody CategoryRequestDTO request) {
         var category = CategoryMapper.toCategory(request);
         var savedCategory = categoryService.saveCategory(category);
-        return CategoryMapper.toCategoryResponseDTO(savedCategory);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoryMapper.toCategoryResponseDTO(savedCategory));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCategoryById(@PathVariable("id") Long categoryId) {
+    public ResponseEntity<Void> deleteCategoryById(@PathVariable("id") Long categoryId) {
         categoryService.deleteCategory(categoryId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
