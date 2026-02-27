@@ -33,6 +33,14 @@ public class MovieController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieResponseDTO>> getByCategory(@RequestParam Long category) {
+        var movieList = movieService.findByCategory(category);
+        return ResponseEntity.ok(movieList.stream()
+                .map(MovieMapper::toMovieResponseDTO)
+                .toList());
+    }
+
     @PostMapping
     public ResponseEntity<MovieResponseDTO> save(@RequestBody MovieRequestDTO request) {
         var savedMovie = movieService.save(MovieMapper.toMovie(request));
