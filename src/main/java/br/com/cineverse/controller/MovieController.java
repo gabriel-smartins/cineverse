@@ -26,12 +26,17 @@ public class MovieController {
 
     @GetMapping
     public ResponseEntity<List<MovieResponseDTO>> getAll() {
-        var movieList = movieService.getAll();
+        var movieList = movieService.findAll();
         return ResponseEntity.ok(movieList.stream()
                 .map(MovieMapper::toMovieResponseDTO)
                 .toList());
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<MovieResponseDTO> getById(@PathVariable("id") Long movieId) {
+        return movieService.findById(movieId)
+                .map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponseDTO(movie)))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 }
