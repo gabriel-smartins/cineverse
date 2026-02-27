@@ -27,6 +27,13 @@ public class MovieService {
         return movieRepository.findById(id);
     }
 
+    public List<Movie> findByCategory(Long categoryId) {
+        return movieRepository.findMovieByCategories(List.of(Category
+                .builder()
+                .id(categoryId)
+                .build()));
+    }
+
     public Movie save(Movie movie) {
 
         var categories = findCategories(movie.getCategories());
