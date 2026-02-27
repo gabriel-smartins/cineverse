@@ -18,12 +18,6 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @PostMapping
-    public ResponseEntity<MovieResponseDTO> save(@RequestBody MovieRequestDTO request) {
-        var savedMovie = movieService.save(MovieMapper.toMovie(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toMovieResponseDTO(savedMovie));
-    }
-
     @GetMapping
     public ResponseEntity<List<MovieResponseDTO>> getAll() {
         var movieList = movieService.findAll();
@@ -39,4 +33,15 @@ public class MovieController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public ResponseEntity<MovieResponseDTO> save(@RequestBody MovieRequestDTO request) {
+        var savedMovie = movieService.save(MovieMapper.toMovie(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toMovieResponseDTO(savedMovie));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long movieId) {
+        movieService.delete(movieId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
