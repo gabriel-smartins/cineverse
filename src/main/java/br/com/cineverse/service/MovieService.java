@@ -19,6 +19,14 @@ public class MovieService {
     private final CategoryService categoryService;
     private final StreamingService streamingService;
 
+    public List<Movie> findAll() {
+        return movieRepository.findAll();
+    }
+
+    public Optional<Movie> findById(Long id){
+        return movieRepository.findById(id);
+    }
+
     public Movie save(Movie movie) {
 
         var categories = findCategories(movie.getCategories());
@@ -30,14 +38,12 @@ public class MovieService {
                 .build());
     }
 
-    public List<Movie> findAll() {
-        return movieRepository.findAll();
+    public void delete(Long id) {
+        movieRepository.deleteById(id);
     }
 
-    public Optional<Movie> findById(Long id){
-        return movieRepository.findById(id);
-    }
 
+    // Métodos auxiliares
     private List<Category> findCategories(List<Category> categories) {
         List<Category> categoriesFound = new ArrayList<>();
 
