@@ -23,7 +23,7 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public Optional<Movie> findById(Long id){
+    public Optional<Movie> findById(Long id) {
         return movieRepository.findById(id);
     }
 
@@ -38,10 +38,36 @@ public class MovieService {
                 .build());
     }
 
+    public Optional<Movie> update(Long id, Movie updateMovie) {
+        var movieById = movieRepository.findById(id);
+
+        if (movieById.isPresent()) {
+
+            List<Category> categories = findCategories(updateMovie.getCategories());
+            List<Streaming> streamings = findStreamings(updateMovie.getStreamings());
+
+            Movie movie = movieById.get();
+            var updatedMovie = movie.toBuilder()
+                    .title(updateMovie.getTitle())
+                    .description(updateMovie.getDescription())
+                    .releaseDate(updateMovie.getReleaseDate())
+                    .rating(updateMovie.getRating())
+                    .categories(categories)
+                    .streamings(streamings)
+                    .build();
+
+            movieRepository.save(updatedMovie);
+
+            return Optional.of(movie);
+
+        }
+        return Optional.empty();
+    }
+
+
     public void delete(Long id) {
         movieRepository.deleteById(id);
     }
-
 
     // Métodos auxiliares
     private List<Category> findCategories(List<Category> categories) {
