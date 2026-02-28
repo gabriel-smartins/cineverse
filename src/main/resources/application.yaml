@@ -17,3 +17,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+
+cineverse:
+  security:
+    secret: ${JWT_SECRET}
