@@ -4,6 +4,7 @@ import br.com.cineverse.controller.dto.request.MovieRequestDTO;
 import br.com.cineverse.controller.dto.response.MovieResponseDTO;
 import br.com.cineverse.mapper.MovieMapper;
 import br.com.cineverse.service.MovieService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,13 +43,13 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieResponseDTO> save(@RequestBody MovieRequestDTO request) {
+    public ResponseEntity<MovieResponseDTO> save(@Valid @RequestBody MovieRequestDTO request) {
         var savedMovie = movieService.save(MovieMapper.toMovie(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toMovieResponseDTO(savedMovie));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieResponseDTO> update(@PathVariable("id") Long movieId, @RequestBody MovieRequestDTO request) {
+    public ResponseEntity<MovieResponseDTO> update(@PathVariable("id") Long movieId, @Valid @RequestBody MovieRequestDTO request) {
         return movieService.update(movieId, MovieMapper.toMovie(request))
                 .map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponseDTO(movie)))
                 .orElse(ResponseEntity.notFound().build());

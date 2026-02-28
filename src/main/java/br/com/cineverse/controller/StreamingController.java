@@ -4,6 +4,7 @@ import br.com.cineverse.controller.dto.request.StreamingRequestDTO;
 import br.com.cineverse.controller.dto.response.StreamingResponseDTO;
 import br.com.cineverse.mapper.StreamingMapper;
 import br.com.cineverse.service.StreamingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class StreamingController {
     }
 
     @PostMapping
-    public ResponseEntity<StreamingResponseDTO> save(@RequestBody StreamingRequestDTO request) {
+    public ResponseEntity<StreamingResponseDTO> save(@Valid @RequestBody StreamingRequestDTO request) {
         var streaming = StreamingMapper.toStreaming(request);
         var savedStreaming = streamingService.save(streaming);
         return ResponseEntity.status(HttpStatus.CREATED).body(StreamingMapper.toStreamingResponseDTO(savedStreaming));

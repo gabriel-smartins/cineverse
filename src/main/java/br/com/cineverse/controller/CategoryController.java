@@ -5,6 +5,7 @@ import br.com.cineverse.controller.dto.response.CategoryResponseDTO;
 import br.com.cineverse.entity.Category;
 import br.com.cineverse.mapper.CategoryMapper;
 import br.com.cineverse.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> save(@RequestBody CategoryRequestDTO request) {
+    public ResponseEntity<CategoryResponseDTO> save(@Valid @RequestBody CategoryRequestDTO request) {
         var category = CategoryMapper.toCategory(request);
         var savedCategory = categoryService.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(CategoryMapper.toCategoryResponseDTO(savedCategory));
