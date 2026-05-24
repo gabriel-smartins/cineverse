@@ -262,9 +262,3 @@ http://localhost:8080
 - `400 Bad Request` para validações falhas ou credenciais inválidas.
 - `404 Not Found` para recursos inexistentes.
 - Exemplos de erro de validação retornam um JSON com campo e mensagem.
-
-## Observações finais
-
-- Não há documentação Swagger/OpenAPI habilitada no projeto atualmente.
-- O foco do backend está na modelagem de domínio e no controle de acesso via JWT.
-- Para uso em portfólio, destaque a separação em camadas, o uso de JPA para relacionamentos `ManyToMany` e a autenticação segura com Spring Security.
